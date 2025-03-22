@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { UserModule } from './user/user.module';
+import { Movie} from './movie.entity';
 
 // The root module of the application.
 
@@ -16,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: 'popcorn-palace',
       database: 'popcorn-palace',
       autoLoadEntities: true,
+      entities: [Movie],
       synchronize: true, //todo - change
     })
   ],
