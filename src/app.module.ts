@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './movies/movie.entity';
 import { MovieModule } from './movies/movie.module';
+import { ShowtimeModule } from './showtimes/showtime.module';
 
 // The root module of the application.
 
@@ -19,6 +20,7 @@ import { MovieModule } from './movies/movie.module';
       synchronize: true, //todo - change
     }),
     MovieModule,
+    ShowtimeModule,
   ],
   // controllers: [MovieController],
   // providers: [MovieService],

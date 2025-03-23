@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from './movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+
 
 // A basic controller with a single route.
 
@@ -14,11 +15,19 @@ export class MovieController {
     return this.movieService.findAll();
   }
 
-  @Get(':id') findMovie(id: number): Promise<Movie | null> {
-    return this.movieService.findMovie(id);
+  // @Post('update')
+  // @HttpCode(200) //todo - make sure it's working
+  // findMovie(title: string, @Body() updateMovieDto: UpdateMovieDto): Promise<Movie | null> {
+  //   return this.movieService.findMovie(title, updateMovieDto);
+  // }
+
+  @Delete(':movieTitle')
+  async remove(@Param('movieTitle') title: string): Promise<void> {
+    await this.movieService.remove(title);
   }
 
   @Post()
+  @HttpCode(200)
   @UsePipes(new ValidationPipe()) // Enables validation
   async create(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
     return this.movieService.createMovie(createMovieDto);
