@@ -1,6 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
-import { Showtime } from './showtime.entity';
+import { Body, Controller, Get, HttpCode, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Showtime } from '../entities/showtime.entity';
 import { ShowtimeService } from './showtime.service';
+import { CreateShowtimeDto } from './showtime.dto';
+
+// import { CreateShowtimeDto } from sho
 
 
 @Controller('showtimes')
@@ -8,8 +11,16 @@ export class ShowtimeController {
   constructor(private readonly showtimeService: ShowtimeService) {
   }
 
-  @Get() findAll(): Promise<Showtime[]> {
-    return this.showtimeService.findAll();
+  @Get(':showtimeId')
+  findById(@Param('showtimeId') showtimeId: number): Promise<Showtime> {
+    return this.showtimeService.findById(showtimeId);
+  }
+
+  @Post()
+  @HttpCode(200)
+  @UsePipes(new ValidationPipe())
+  async createShowtime(@Body() createShowtimeDto: CreateShowtimeDto): Promise<Showtime> {
+    return this.showtimeService.create(createShowtimeDto);
   }
 
 }

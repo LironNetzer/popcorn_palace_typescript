@@ -10,7 +10,6 @@ export class Showtime {
 
   @Column()
   theater: string;
-  // todo - add the constraint for theatre + start time + end time
 
   @Column('timestamptz')
   startTime: Date;

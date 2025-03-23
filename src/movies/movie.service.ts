@@ -17,6 +17,10 @@ export class MovieService {
     return this.movieRepository.find(); // fetch all movies
   }
 
+  findById(movieId: number): Promise<Movie> {
+    return this.movieRepository.findOne({ where: { id: movieId } });
+  }
+
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
     // check if there is already a movie with this name (in general a title
     // isn't unique for a movie, but because the update function is by a movie
@@ -30,10 +34,10 @@ export class MovieService {
     return this.movieRepository.save(newMovie);
   }
 
-  async findByTitle(title: string): Promise<Movie | null> {
+  async findByTitle(title: string): Promise<Movie> {
     const movie = await this.movieRepository.findOne({ where: { title: title } });
     if (!movie) {
-      throw new Error(`Movie with the title ${title} doesnt exist`);
+      throw new Error(`Movie with the title ${title} doesnt exist`); //todo - change
     }
     return movie;
   }

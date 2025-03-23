@@ -13,15 +13,15 @@ export class CreateShowtimeDto {
 
   @IsString()
   @Length(1, 255)
-  theatre: string;
+  theater: string;
 
   @IsDate()
   @Type(() => Date) //todo ?
-  startTime: number;
+  startTime: Date;
 
   @IsDate()
   @Type(() => Date) //todo ?
-  endTime: number;
+  endTime: Date;
 }
 
 export class UpdateShowtimeDto extends CreateShowtimeDto {
