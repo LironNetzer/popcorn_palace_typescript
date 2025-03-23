@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Movie } from './movie.entity';
-import { CreateMovieDto } from './dto/create-movie.dto';
+import { Movie } from '../entities/movie.entity';
+import { CreateMovieDto } from './movie.dto';
 
 
 @Injectable()
@@ -13,18 +13,13 @@ export class MovieService {
   ) {
   }
 
+  findAll(): Promise<Movie[]> {
+    return this.movieRepository.find(); // fetch all movies
+  }
+
   async createMovie(createMovieDto: CreateMovieDto): Promise<Movie> {
     const newMovie = this.movieRepository.create(createMovieDto);
     return this.movieRepository.save(newMovie);
-  }
-
-  // async createMovie(movie: Movie): Promise<Movie> {
-  //   const newMovie = this.movieRepository.create(movie);
-  //   return this.movieRepository.save(newMovie);
-  // }
-
-  findAll(): Promise<Movie[]> {
-    return this.movieRepository.find(); // fetch all movies
   }
 
 

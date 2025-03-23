@@ -5,18 +5,20 @@ export class Movie {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' }) //add length?
+  @Column()
   title: string;
 
-  @Column({ type: 'varchar' })
+  @Column()
   genre: string;
 
-  @Column({ type: 'int' })
+  @Column()
   duration: number;
 
   @Column({ type: 'float' })
   rating: number;
 
-  @Column({ type: 'int' })
+  @Column()
   releaseYear: number;
+
+  // add relation - one to many with showtime
 }

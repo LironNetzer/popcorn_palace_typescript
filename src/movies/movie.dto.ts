@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsString, Length, Max, Min } from 'class-validator';
 
 //todo - add error messages?
 //for example - @MinLength(2, { message: 'Name must have atleast 2 characters.' })
@@ -6,23 +6,30 @@ import { IsInt, IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
 export class CreateMovieDto {
   @IsString()
   @Length(1, 255)
-  @IsNotEmpty()
+  @IsNotEmpty() // ?
   title: string;
 
   @IsString()
-  @Length(1, 255)
+  @Length(1, 100)
   genre: string;
 
   @IsInt()
-  @IsNotEmpty()
+  @Min(1)
+  @Max(900) // longest movie ever is 873 minutes
   duration: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @Min(0)
+  @Max(10)
   rating: number;
 
   @IsInt()
-  @IsNotEmpty()
+  @Min(1800)
+  @Max(2200)
   releaseYear: number;
 }
+
+export class UpdateMovieDto extends CreateMovieDto {
+}
+
 

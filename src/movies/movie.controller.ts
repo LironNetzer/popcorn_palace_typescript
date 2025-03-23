@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { Movie } from './movie.entity';
-import { CreateMovieDto } from './dto/create-movie.dto';
+import { Movie } from '../entities/movie.entity';
+import { CreateMovieDto } from './movie.dto';
 
 
 // A basic controller with a single route.
@@ -11,7 +11,7 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {
   }
 
-  @Get() findAll(): Promise<Movie[]> {
+  @Get('all') findAll(): Promise<Movie[]> {
     return this.movieService.findAll();
   }
 
