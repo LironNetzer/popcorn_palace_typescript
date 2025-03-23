@@ -1,4 +1,15 @@
-import { Body, Controller, Get, HttpCode, Param, ParseIntPipe, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  ParseIntPipe,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Showtime } from '../entities/showtime.entity';
 import { ShowtimeService } from './showtime.service';
 import { CreateShowtimeDto, UpdateShowtimeDto } from './showtime.dto';
@@ -28,6 +39,11 @@ export class ShowtimeController {
   @UsePipes(new ValidationPipe())
   async updateShowtime(@Param('showtimeId', ParseIntPipe) showtimeId: number, @Body() updateShowtimeDto: UpdateShowtimeDto): Promise<void> {
     return this.showtimeService.update(showtimeId, updateShowtimeDto);
+  }
+
+  @Delete(':showtimeId')
+  async deleteShowtime(@Param('showtimeId', ParseIntPipe) showtimeId: number): Promise<void> {
+    await this.showtimeService.delete(showtimeId);
   }
 
 

@@ -28,7 +28,7 @@ export class ShowtimeService {
     const movie = await this.movieService.findById(createShowtimeDto.movieId);
     if (!movie) {
       throw new HttpException(`Movie with id ${createShowtimeDto.movieId} not found`, HttpStatus.NOT_FOUND); //todo ? not found or somethinhg else?
-    }
+    } //todo - earse after I finished the relations
 
     // Check for overlapping showtimes in the same theater
     const hasOverlap = await this.isTheatreFree(
@@ -51,10 +51,7 @@ export class ShowtimeService {
 
   async update(showtimeId: number, @Body() updateShowtimeDto: UpdateShowtimeDto): Promise<void> {
     // verify the showtime exists
-    const showtimeToUpdate = await this.showtimeRepository.findOne({ where: { id: showtimeId } });
-    if (!showtimeToUpdate) {
-      throw new HttpException(`Showtime with id ${showtimeId} not found`, HttpStatus.BAD_REQUEST); //todo ? not found or somethinhg else?
-    }
+    const showtimeToUpdate = await this.findById(showtimeId);
 
     // Check for overlapping showtimes in the same theater (except the showtime itself)
     const hasOverlap = await this.isTheatreFree(
@@ -74,7 +71,12 @@ export class ShowtimeService {
     showtimeToUpdate.endTime = updateShowtimeDto.endTime;
     showtimeToUpdate.movieId = updateShowtimeDto.movieId;
     await this.showtimeRepository.save(showtimeToUpdate);
-    
+
+  }
+
+  async delete(showtimeId: number): Promise<void> {
+    const showtime = await this.findById(showtimeId);
+    await this.showtimeRepository.remove(showtime);
   }
 
   private async isTheatreFree(
@@ -97,9 +99,7 @@ export class ShowtimeService {
 
     const overlappingShowtimes = await queryBuilder.getMany();
 
-    if (overlappingShowtimes.length > 0) {
-      return true;
-    }
-    return false;
+    return overlappingShowtimes.length > 0;
+
   }
 }
