@@ -1,7 +1,5 @@
 import { IsInt, IsNumber, IsString, Length, Max, Min } from 'class-validator';
 
-//todo - add error messages?
-//for example - @MinLength(2, { message: 'Name must have atleast 2 characters.' })
 
 export class CreateMovieDto {
   @IsString()
@@ -30,5 +28,3 @@ export class CreateMovieDto {
 
 export class UpdateMovieDto extends CreateMovieDto {
 }
-
-
