@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Showtime } from '../entities/showtime.entity';
 import { MovieService } from '../movies/movie.service';
-import { CreateShowtimeDto } from './showtime.dto';
+import { CreateShowtimeDto, UpdateShowtimeDto } from './showtime.dto';
 
 
 @Injectable()
@@ -49,11 +49,39 @@ export class ShowtimeService {
     return this.showtimeRepository.save(showtime);
   }
 
+  async update(showtimeId: number, @Body() updateShowtimeDto: UpdateShowtimeDto): Promise<void> {
+    // verify the showtime exists
+    const showtimeToUpdate = await this.showtimeRepository.findOne({ where: { id: showtimeId } });
+    if (!showtimeToUpdate) {
+      throw new HttpException(`Showtime with id ${showtimeId} not found`, HttpStatus.BAD_REQUEST); //todo ? not found or somethinhg else?
+    }
+
+    // Check for overlapping showtimes in the same theater (except the showtime itself)
+    const hasOverlap = await this.isTheatreFree(
+      updateShowtimeDto.theater,
+      updateShowtimeDto.startTime,
+      updateShowtimeDto.endTime,
+      showtimeId,
+    );
+    if (hasOverlap) {
+      throw new HttpException(`This theatre is occupied in the relevant time frame`, HttpStatus.BAD_REQUEST);
+    }
+
+    // update the showtime
+    showtimeToUpdate.price = updateShowtimeDto.price;
+    showtimeToUpdate.theater = updateShowtimeDto.theater;
+    showtimeToUpdate.startTime = updateShowtimeDto.startTime;
+    showtimeToUpdate.endTime = updateShowtimeDto.endTime;
+    showtimeToUpdate.movieId = updateShowtimeDto.movieId;
+    await this.showtimeRepository.save(showtimeToUpdate);
+    
+  }
+
   private async isTheatreFree(
     theater: string,
     startTime: Date,
     endTime: Date,
-    // excludeId?: number,
+    excludeId?: number,
   ): Promise<Boolean> {
     const queryBuilder = this.showtimeRepository
       .createQueryBuilder('showtime')
@@ -63,15 +91,14 @@ export class ShowtimeService {
         { startTime, endTime },
       );
 
-    // if (excludeId) {
-    //   queryBuilder.andWhere('showtime.id != :excludeId', { excludeId });
-    // }
+    if (excludeId) {
+      queryBuilder.andWhere('showtime.id != :excludeId', { excludeId });
+    }
 
     const overlappingShowtimes = await queryBuilder.getMany();
 
     if (overlappingShowtimes.length > 0) {
       return true;
-      // throw new BadRequestException('There is an overlapping showtime in this theater');
     }
     return false;
   }
