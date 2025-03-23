@@ -18,12 +18,26 @@ export class MovieService {
   }
 
   async createMovie(createMovieDto: CreateMovieDto): Promise<Movie> {
+    // check if there is already a movie with this name (in general a title
+    // isn't unique for a movie, but because the update function is by a movie
+    // title, it won't be consistent to allow tow entities with the same name
+    const existingMovie: Movie = await this.movieRepository.findOne({ where: { title: createMovieDto.title } });
+    if (existingMovie) {
+      throw new Error('Movie with the title ${createMovieDto.title} already exists'); //todo - fix string interpolation
+    }
+
     const newMovie = this.movieRepository.create(createMovieDto);
     return this.movieRepository.save(newMovie);
   }
 
+  async findByTitle(title: string): Promise<Movie | null> {
+    const movie = await this.movieRepository.findOne({ where: { title: title } });
+    if (!movie) {
+      throw new Error('Movie with the title ${title} doesnt exist');
+    }
+    return movie;
+  }
 
-  // findMovie(title: string): Promise<Movie | null> {
   //   return this.movieRepository.findOneBy({ title });
   // }
   //
@@ -42,7 +56,9 @@ export class MovieService {
   // }
 
   async remove(title: string): Promise<void> {
-    await this.movieRepository.delete(title);
+    const movie = await this.findByTitle(title);
+    await this.movieRepository.remove(movie);
+    // todo - change to delete? (faster, but can't add the condition to make sure it exists
   }
 
 }

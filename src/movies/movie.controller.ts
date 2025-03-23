@@ -15,21 +15,24 @@ export class MovieController {
     return this.movieService.findAll();
   }
 
-  // @Post('update')
-  // @HttpCode(200) //todo - make sure it's working
-  // findMovie(title: string, @Body() updateMovieDto: UpdateMovieDto): Promise<Movie | null> {
-  //   return this.movieService.findMovie(title, updateMovieDto);
-  // }
-
-  @Delete(':movieTitle')
-  async remove(@Param('movieTitle') title: string): Promise<void> {
-    await this.movieService.remove(title);
-  }
-
   @Post()
   @HttpCode(200)
   @UsePipes(new ValidationPipe()) // Enables validation
-  async create(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
+  async createMovie(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
     return this.movieService.createMovie(createMovieDto);
   }
+
+// @Post('update')
+// @HttpCode(200) //todo - make sure it's working
+// findMovie(title: string, @Body() updateMovieDto: UpdateMovieDto): Promise<Movie | null> {
+//   return this.movieService.findMovie(title, updateMovieDto);
+// }
+
+  @Delete(':movieTitle')
+  // @HttpCode(200)
+  async remove(@Param('movieTitle') title: string): Promise<void> {
+    await this.movieService.remove(title);
+  }
 }
+
+
