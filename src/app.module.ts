@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Movie} from './movie.entity';
+import { Movie } from './movies/movie.entity';
+import { MovieModule } from './movies/movie.module';
 
 // The root module of the application.
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({ // to enable TypeORM services globally in the code
       type: 'postgres',
       host: 'localhost',
       port: 5432,
@@ -18,9 +17,11 @@ import { Movie} from './movie.entity';
       autoLoadEntities: true,
       entities: [Movie],
       synchronize: true, //todo - change
-    })
+    }),
+    MovieModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  // controllers: [MovieController],
+  // providers: [MovieService],
 })
-export class AppModule {}
+export class AppModule {
+}

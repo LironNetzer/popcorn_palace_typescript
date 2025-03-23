@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MovieController } from './movies/movie.controller';
+import { MovieService } from './movies/movie.service';
 
 // The unit tests for the controller.
 
 describe('AppController', () => {
-  let appController: AppController;
+  let appController: MovieController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
+      controllers: [MovieController],
+      providers: [MovieService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    appController = app.get<MovieController>(MovieController);
   });
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.findAll()).toBe('Hello World!');
     });
   });
 });
