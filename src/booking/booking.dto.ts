@@ -11,3 +11,7 @@ export class CreateBookingDto {
   @IsString()
   userId: string;
 }
+
+export class BookingResponseDto {
+  bookingId: string; //todo - make sure its uuid
+}
