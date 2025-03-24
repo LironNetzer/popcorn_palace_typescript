@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Showtime } from './showtime.entity';
 
 // import { Showtime } from './showtime.entity';
 
@@ -22,8 +23,7 @@ export class Movie {
   @Column()
   releaseYear: number;
 
-  // @OneToMany(() => Showtime, showtime => showtime.movie)
-  // showtimes: Showtime[];
-
-  // add relation - one to many with showtime
+  // A movie can have several showtimes, but each showtime belongs to only one movie
+  @OneToMany(() => Showtime, (showtime) => showtime.movie)
+  showtimes: Showtime[];
 }
