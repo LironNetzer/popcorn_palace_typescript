@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { MovieService } from './movie.service';
 import { Movie } from '../entities/movie.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
@@ -28,7 +27,6 @@ describe('MovieService', () => {
     }).compile();
 
     service = module.get<MovieService>(MovieService);
-    repo = module.get<Repository<Movie>>(getRepositoryToken(Movie));
 
     // Reset mock calls between tests
     jest.clearAllMocks();

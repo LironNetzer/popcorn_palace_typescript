@@ -154,7 +154,6 @@ describe('Popcorn Palace E2E Tests', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('bookingId');
-      createdBookingId = response.body.bookingId;
     });
 
     it('should prevent booking the same seat twice', async () => {
@@ -167,14 +166,6 @@ describe('Popcorn Palace E2E Tests', () => {
 
   // Cleanup and Delete Tests
   describe('Cleanup', () => {
-    it('should delete a booking', async () => {
-      // Note: The current code doesn't have a delete endpoint for bookings
-      // This test is a placeholder for future implementation
-      // await request(app.getHttpServer())
-      //   .delete(`/bookings/${createdBookingId}`)
-      //   .expect(200);
-    });
-
     it('should delete a showtime', async () => {
       await request(app.getHttpServer())
         .delete(`/showtimes/${createdShowtimeId}`)
