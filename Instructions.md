@@ -72,11 +72,15 @@ The db connection is already configured in the app and in the docker compose fil
 
 ## Testing
 
-Run the following command to test the application:
+Run the following commands to test the application:
 
 - **Unit Tests:**
   ```sh
   npm run test
+  ```
+- **End-to-End Tests:**
+  ```sh
+  npm run test:e2e
   ```
 
 This completes the setup and usage instructions for the Popcorn Palace Movie Ticket Booking System.
