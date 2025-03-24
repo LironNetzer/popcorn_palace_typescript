@@ -8,7 +8,7 @@ import { MovieModule } from '../movies/movie.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Showtime]),
-    MovieModule,
+    MovieModule, //todo - erase?
   ],
   providers: [ShowtimeService],
   controllers: [ShowtimeController],

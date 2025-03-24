@@ -3,7 +3,7 @@ import { BookingService } from './booking.service';
 
 
 @Controller('bookings')
-export class MovieController {
+export class BookingController {
   constructor(private readonly bookingService: BookingService) {
   }
 

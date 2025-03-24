@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
+import { Showtime } from './entities/showtime.entity';
+import { Booking } from './entities/booking.entity';
 import { MovieModule } from './movies/movie.module';
 import { ShowtimeModule } from './showtimes/showtime.module';
+import { BookingModule } from './booking/booking.module';
 
 // The root module of the application.
 
@@ -16,14 +19,13 @@ import { ShowtimeModule } from './showtimes/showtime.module';
       password: 'popcorn-palace',
       database: 'popcorn-palace',
       autoLoadEntities: true,
-      entities: [Movie],
+      entities: [Movie, Showtime, Booking],
       synchronize: true, //todo - change
     }),
     MovieModule,
     ShowtimeModule,
+    BookingModule,
   ],
-  // controllers: [MovieController],
-  // providers: [MovieService],
 })
 export class AppModule {
 }
