@@ -39,6 +39,8 @@ The db connection is already configured in the app and in the docker compose fil
   npm run start:dev
   ```
 
+The app is available at http://localhost:3000
+
 ## APIs
 
 ### Movies  APIs
