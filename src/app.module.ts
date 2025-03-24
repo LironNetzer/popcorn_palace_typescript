@@ -32,7 +32,7 @@ import { BookingModule } from './booking/booking.module';
       database: 'popcorn-palace',
       autoLoadEntities: true,
       entities: [Movie, Showtime, Booking],
-      synchronize: true, //todo - change
+      synchronize: true,
     }),
     MovieModule,
     ShowtimeModule,

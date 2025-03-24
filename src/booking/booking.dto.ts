@@ -33,5 +33,5 @@ export class CreateBookingDto {
  * Represents the data transfer object for a booking response.
  */
 export class BookingResponseDto {
-  bookingId: string; //todo - make sure its uuid
+  bookingId: string;
 }

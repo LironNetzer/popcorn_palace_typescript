@@ -36,14 +36,14 @@ export class CreateShowtimeDto {
    * The start time of the show
    */
   @IsDate()
-  @Type(() => Date) //todo ?
+  @Type(() => Date)
   startTime: Date;
 
   /**
    * The end time of the show.
    */
   @IsDate()
-  @Type(() => Date) //todo ?
+  @Type(() => Date)
   endTime: Date;
 }
 
