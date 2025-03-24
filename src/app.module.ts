@@ -7,8 +7,20 @@ import { MovieModule } from './movies/movie.module';
 import { ShowtimeModule } from './showtimes/showtime.module';
 import { BookingModule } from './booking/booking.module';
 
-// The root module of the application.
-
+/**
+ * Represents the root application module for the Popcorn Palace application.
+ *
+ * This module is responsible for the initialization and configuration of all the
+ * core modules required by the application, including database connection.
+ *
+ * The TypeORM module is configured to connect to a PostgreSQL database with the
+ * specified credentials and settings.
+ *
+ * Modules imported:
+ * - MovieModule: Provides functionality related to movie management.
+ * - ShowtimeModule: Handles showtime schedules and related operations.
+ * - BookingModule: Manages bookings for movies and associated operations.
+ */
 @Module({
   imports: [
     TypeOrmModule.forRoot({ // to enable TypeORM services globally in the code
