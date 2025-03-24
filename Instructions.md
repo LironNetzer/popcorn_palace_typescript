@@ -69,35 +69,15 @@ The db connection is already configured in the app and in the docker compose fil
 
 - The system uses PostgreSQL for data persistence.
 - Use `compose.yml` to run a local PostgreSQL instance.
-- Configure the database connection in the `.env` file.
 
 ## Testing
 
-Run the following commands to test the application:
+Run the following command to test the application:
 
 - **Unit Tests:**
   ```sh
   npm run test
   ```
-- **End-to-End Tests:**
-  ```sh
-  npm run test:e2e
-  ```
-- **Test Coverage:**
-  ```sh
-  npm run test:cov
-  ```
-
-## Error Handling
-
-- Ensure valid inputs are provided for API requests.
-- In case of an error, the API returns informative error messages.
-
-## Additional Notes
-
-- Follow RESTful API design principles.
-- Ensure no overlapping showtimes for the same theater.
-- Ensure no seat is booked twice for the same showtime.
 
 This completes the setup and usage instructions for the Popcorn Palace Movie Ticket Booking System.
 
