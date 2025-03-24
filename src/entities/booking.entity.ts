@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Showtime } from './showtime.entity';
 
 @Entity()
 export class Booking {
@@ -14,7 +15,7 @@ export class Booking {
   @Column()
   userId: string;
 
-  // @ManyToOne(() => Showtime, showtime => showtime.bookings)
-  // @JoinColumn({ name: 'showtimeId' })
-  // showtime: Showtime;
+  @ManyToOne(() => Showtime, (showtime) => showtime.bookings, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'showtimeId' }) // A foreign key
+  showtime: Showtime;
 }
