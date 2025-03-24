@@ -6,9 +6,6 @@ import { Movie } from '../entities/movie.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 
-/**
- *
- */
 describe('MovieService', () => {
   let service: MovieService;
   let repo: Repository<Movie>;

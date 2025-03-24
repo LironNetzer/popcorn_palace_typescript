@@ -33,7 +33,7 @@ export class Movie {
   /**
    * The rating of the movie.
    */
-  @Column({ type: 'decimal' })
+  @Column({ type: 'float' })
   rating: number;
 
   /**

@@ -16,7 +16,7 @@ export class Showtime {
   /**
    * The price of the showtime.
    */
-  @Column({ type: 'decimal' })
+  @Column({ type: 'float' })
   price: number;
 
   /**
