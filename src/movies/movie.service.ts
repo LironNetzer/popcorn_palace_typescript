@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from '../entities/movie.entity';
@@ -27,7 +27,7 @@ export class MovieService {
     // title, it won't be consistent to allow two entities with the same name
     const existingMovie: Movie = await this.movieRepository.findOne({ where: { title: createMovieDto.title } });
     if (existingMovie) {
-      throw new HttpException(`Movie with the title ${createMovieDto.title} already exists.`, HttpStatus.BAD_REQUEST);
+      throw new BadRequestException(`Movie with the title ${createMovieDto.title} already exists.`);
     }
 
     const newMovie = this.movieRepository.create(createMovieDto);
@@ -37,7 +37,7 @@ export class MovieService {
   async findByTitle(title: string): Promise<Movie> {
     const movie = await this.movieRepository.findOne({ where: { title: title } });
     if (!movie) {
-      throw new Error(`Movie with the title ${title} doesnt exist`); //todo - change
+      throw new NotFoundException(`Movie with the title ${title} doesnt exist`);
     }
     return movie;
   }
@@ -45,21 +45,21 @@ export class MovieService {
   async update(movieTitle: string, updateMovieDto: UpdateMovieDto): Promise<void> {
     const movieToUpdate = await this.movieRepository.findOne({ where: { title: movieTitle } });
     if (!movieToUpdate) {
-      throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
+      throw new NotFoundException('Movie not found');
     }
 
     movieToUpdate.title = updateMovieDto.title;
     movieToUpdate.genre = updateMovieDto.genre;
     movieToUpdate.duration = updateMovieDto.duration;
+    movieToUpdate.rating = updateMovieDto.rating;
     movieToUpdate.releaseYear = updateMovieDto.releaseYear;
 
     await this.movieRepository.save(movieToUpdate);
   }
 
-  async delete(title: string): Promise<void> {
+  async remove(title: string): Promise<void> {
     const movie = await this.findByTitle(title);
     await this.movieRepository.remove(movie);
     // todo - change to delete? (faster, but can't add the condition to make sure it exists
   }
-
 }

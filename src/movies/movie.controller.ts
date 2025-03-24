@@ -31,7 +31,7 @@ export class MovieController {
 
   @Delete(':movieTitle')
   async deleteMovie(@Param('movieTitle') movieTitle: string): Promise<void> {
-    await this.movieService.delete(movieTitle);
+    await this.movieService.remove(movieTitle);
   }
 }
 
