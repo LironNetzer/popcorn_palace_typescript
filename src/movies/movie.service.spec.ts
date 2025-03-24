@@ -5,6 +5,10 @@ import { MovieService } from './movie.service';
 import { Movie } from '../entities/movie.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
+
+/**
+ *
+ */
 describe('MovieService', () => {
   let service: MovieService;
   let repo: Repository<Movie>;
@@ -99,7 +103,6 @@ describe('MovieService', () => {
 
       const result = await service.findById(999);
       expect(result).toBeNull();
-      // await expect(service.findById(999)).rejects.toThrow(NotFoundException);
       expect(mockMovieRepository.findOne).toHaveBeenCalledWith({
         where: { id: 999 },
       });
