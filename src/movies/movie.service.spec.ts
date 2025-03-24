@@ -5,10 +5,8 @@ import { MovieService } from './movie.service';
 import { Movie } from '../entities/movie.entity';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 
-
 describe('MovieService', () => {
   let service: MovieService;
-  let repo: Repository<Movie>;
 
   const mockMovieRepository = {
     find: jest.fn(),
@@ -128,7 +126,9 @@ describe('MovieService', () => {
     it('should throw NotFoundException when movie title not found', async () => {
       mockMovieRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findByTitle('Nonexistent Movie')).rejects.toThrow(NotFoundException);
+      await expect(service.findByTitle('Nonexistent Movie')).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockMovieRepository.findOne).toHaveBeenCalledWith({
         where: { title: 'Nonexistent Movie' },
       });
@@ -170,9 +170,14 @@ describe('MovieService', () => {
         releaseYear: 2024,
       };
 
-      mockMovieRepository.findOne.mockResolvedValue({ id: 1, ...createMovieDto });
+      mockMovieRepository.findOne.mockResolvedValue({
+        id: 1,
+        ...createMovieDto,
+      });
 
-      await expect(service.create(createMovieDto)).rejects.toThrow(BadRequestException);
+      await expect(service.create(createMovieDto)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(mockMovieRepository.findOne).toHaveBeenCalledWith({
         where: { title: createMovieDto.title },
       });
@@ -226,7 +231,9 @@ describe('MovieService', () => {
 
       mockMovieRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.update('Nonexistent Movie', updateMovieDto)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.update('Nonexistent Movie', updateMovieDto),
+      ).rejects.toThrow(NotFoundException);
       expect(mockMovieRepository.findOne).toHaveBeenCalledWith({
         where: { title: 'Nonexistent Movie' },
       });
@@ -259,7 +266,9 @@ describe('MovieService', () => {
     it('should throw NotFoundException when trying to remove non-existent movie', async () => {
       mockMovieRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.remove('Nonexistent Movie')).rejects.toThrow(NotFoundException);
+      await expect(service.remove('Nonexistent Movie')).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockMovieRepository.findOne).toHaveBeenCalledWith({
         where: { title: 'Nonexistent Movie' },
       });
@@ -267,4 +276,3 @@ describe('MovieService', () => {
     });
   });
 });
-

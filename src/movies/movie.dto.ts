@@ -47,5 +47,4 @@ export class CreateMovieDto {
  * Represents a Data Transfer Object (DTO) for updating an existing movie entity.
  * This class is an extension of the CreateMovieDto.
  */
-export class UpdateMovieDto extends CreateMovieDto {
-}
+export class UpdateMovieDto extends CreateMovieDto {}

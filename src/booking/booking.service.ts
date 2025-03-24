@@ -5,7 +5,6 @@ import { Booking } from '../entities/booking.entity';
 import { CreateBookingDto } from './booking.dto';
 import { ShowtimeService } from '../showtimes/showtime.service';
 
-
 /**
  * Service responsible for managing booking-related operations for a cinema or event booking system.
  * This service handles functionality such as creating bookings while ensuring seat availability and showtime validity
@@ -16,8 +15,7 @@ export class BookingService {
     @InjectRepository(Booking)
     private bookingRepository: Repository<Booking>,
     private readonly showtimeService: ShowtimeService,
-  ) {
-  }
+  ) {}
 
   /**
    * Creates a new booking based on the provided booking details.
@@ -38,7 +36,9 @@ export class BookingService {
       },
     });
     if (existingBooking) {
-      throw new BadRequestException(`The ${createBookingDto.seatNumber} seat is already taken`);
+      throw new BadRequestException(
+        `The ${createBookingDto.seatNumber} seat is already taken`,
+      );
     }
 
     // create the new booking

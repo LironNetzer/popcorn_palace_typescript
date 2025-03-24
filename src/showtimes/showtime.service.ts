@@ -1,4 +1,9 @@
-import { BadRequestException, Body, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Showtime } from '../entities/showtime.entity';
@@ -23,8 +28,7 @@ export class ShowtimeService {
     @InjectRepository(Showtime)
     private showtimeRepository: Repository<Showtime>,
     private readonly movieService: MovieService,
-  ) {
-  }
+  ) {}
 
   /**
    * Finds a showtime by its unique identifier.
@@ -34,7 +38,9 @@ export class ShowtimeService {
    * @throws {NotFoundException} If no showtime is found with the specified identifier.
    */
   async findById(showtimeId: number): Promise<Showtime> {
-    const showtime = await this.showtimeRepository.findOne({ where: { id: showtimeId } });
+    const showtime = await this.showtimeRepository.findOne({
+      where: { id: showtimeId },
+    });
     if (!showtime) {
       throw new NotFoundException(`Showtime with id ${showtimeId} not found`);
     }
@@ -53,7 +59,9 @@ export class ShowtimeService {
     // verify the movie exists
     const movie = await this.movieService.findById(createShowtimeDto.movieId);
     if (!movie) {
-      throw new NotFoundException(`Movie with id ${createShowtimeDto.movieId} not found`);
+      throw new NotFoundException(
+        `Movie with id ${createShowtimeDto.movieId} not found`,
+      );
     }
 
     // Check for overlapping showtimes in the same theater
@@ -63,7 +71,9 @@ export class ShowtimeService {
       createShowtimeDto.endTime,
     );
     if (hasOverlap) {
-      throw new BadRequestException(`This theatre is occupied in the relevant time frame`);
+      throw new BadRequestException(
+        `This theatre is occupied in the relevant time frame`,
+      );
     }
 
     // Validate start time is before end time
@@ -86,7 +96,10 @@ export class ShowtimeService {
    * @return {Promise<void>} A promise that resolves when the update is successfully completed.
    *         Throws a BadRequestException if the theater is occupied during the relevant time frame.
    */
-  async update(showtimeId: number, @Body() updateShowtimeDto: UpdateShowtimeDto): Promise<void> {
+  async update(
+    showtimeId: number,
+    @Body() updateShowtimeDto: UpdateShowtimeDto,
+  ): Promise<void> {
     // verify the showtime exists
     const showtimeToUpdate = await this.findById(showtimeId);
 
@@ -98,7 +111,9 @@ export class ShowtimeService {
       showtimeId,
     );
     if (hasOverlap) {
-      throw new BadRequestException(`This theatre is occupied in the relevant time frame`);
+      throw new BadRequestException(
+        `This theatre is occupied in the relevant time frame`,
+      );
     }
 
     // update the showtime
@@ -108,7 +123,6 @@ export class ShowtimeService {
     showtimeToUpdate.endTime = updateShowtimeDto.endTime;
     showtimeToUpdate.movieId = updateShowtimeDto.movieId;
     await this.showtimeRepository.save(showtimeToUpdate);
-
   }
 
   /**
@@ -136,7 +150,7 @@ export class ShowtimeService {
     startTime: Date,
     endTime: Date,
     excludeId?: number,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const queryBuilder = this.showtimeRepository
       .createQueryBuilder('showtime')
       .where('showtime.theater = :theater', { theater })

@@ -23,7 +23,8 @@ import { BookingModule } from './booking/booking.module';
  */
 @Module({
   imports: [
-    TypeOrmModule.forRoot({ // to enable TypeORM services globally in the code
+    TypeOrmModule.forRoot({
+      // to enable TypeORM services globally in the code
       type: 'postgres',
       host: 'localhost',
       port: 5432,
@@ -39,5 +40,4 @@ import { BookingModule } from './booking/booking.module';
     BookingModule,
   ],
 })
-export class AppModule {
-}
+export class AppModule {}

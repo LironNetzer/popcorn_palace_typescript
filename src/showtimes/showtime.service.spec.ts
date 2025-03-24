@@ -8,8 +8,6 @@ import { MovieService } from '../movies/movie.service';
 
 describe('ShowtimeService', () => {
   let service: ShowtimeService;
-  let repo: Repository<Showtime>;
-  let movieService: MovieService;
 
   const mockQueryBuilder = {
     where: jest.fn().mockReturnThis(),
@@ -99,7 +97,10 @@ describe('ShowtimeService', () => {
       const newShowtime = { id: 1, ...createShowtimeDto };
 
       // mock movie existence check
-      mockMovieService.findById.mockResolvedValue({ id: 1, title: 'Test Movie' });
+      mockMovieService.findById.mockResolvedValue({
+        id: 1,
+        title: 'Test Movie',
+      });
 
       // mock overlap check
       mockQueryBuilder.getMany.mockResolvedValue([]);
@@ -109,14 +110,26 @@ describe('ShowtimeService', () => {
       const result = await service.create(createShowtimeDto);
 
       expect(result).toEqual(newShowtime);
-      expect(mockMovieService.findById).toHaveBeenCalledWith(createShowtimeDto.movieId);
-      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith('showtime');
-      expect(mockQueryBuilder.where).toHaveBeenCalledWith('showtime.theater = :theater', { theater: 'Theater 1' });
+      expect(mockMovieService.findById).toHaveBeenCalledWith(
+        createShowtimeDto.movieId,
+      );
+      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'showtime',
+      );
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'showtime.theater = :theater',
+        { theater: 'Theater 1' },
+      );
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         '(showtime.startTime < :endTime AND showtime.endTime > :startTime)',
-        { startTime: createShowtimeDto.startTime, endTime: createShowtimeDto.endTime },
+        {
+          startTime: createShowtimeDto.startTime,
+          endTime: createShowtimeDto.endTime,
+        },
       );
-      expect(mockShowtimeRepository.create).toHaveBeenCalledWith(createShowtimeDto);
+      expect(mockShowtimeRepository.create).toHaveBeenCalledWith(
+        createShowtimeDto,
+      );
       expect(mockShowtimeRepository.save).toHaveBeenCalledWith(newShowtime);
     });
 
@@ -130,7 +143,10 @@ describe('ShowtimeService', () => {
       };
 
       // Mock movie existence check
-      mockMovieService.findById.mockResolvedValue({ id: 1, title: 'Test Movie' });
+      mockMovieService.findById.mockResolvedValue({
+        id: 1,
+        title: 'Test Movie',
+      });
 
       // Mock overlap check - return existing overlapping showtime
       mockQueryBuilder.getMany.mockResolvedValue([
@@ -143,9 +159,15 @@ describe('ShowtimeService', () => {
         },
       ]);
 
-      await expect(service.create(createShowtimeDto)).rejects.toThrow(BadRequestException);
-      expect(mockMovieService.findById).toHaveBeenCalledWith(createShowtimeDto.movieId);
-      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith('showtime');
+      await expect(service.create(createShowtimeDto)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(mockMovieService.findById).toHaveBeenCalledWith(
+        createShowtimeDto.movieId,
+      );
+      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'showtime',
+      );
       expect(mockShowtimeRepository.create).not.toHaveBeenCalled();
       expect(mockShowtimeRepository.save).not.toHaveBeenCalled();
     });
@@ -160,10 +182,17 @@ describe('ShowtimeService', () => {
       };
 
       // Mock movie existence check
-      mockMovieService.findById.mockResolvedValue({ id: 1, title: 'Test Movie' });
+      mockMovieService.findById.mockResolvedValue({
+        id: 1,
+        title: 'Test Movie',
+      });
 
-      await expect(service.create(createShowtimeDto)).rejects.toThrow(BadRequestException);
-      expect(mockMovieService.findById).toHaveBeenCalledWith(createShowtimeDto.movieId);
+      await expect(service.create(createShowtimeDto)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(mockMovieService.findById).toHaveBeenCalledWith(
+        createShowtimeDto.movieId,
+      );
       expect(mockShowtimeRepository.create).not.toHaveBeenCalled();
       expect(mockShowtimeRepository.save).not.toHaveBeenCalled();
     });
@@ -178,10 +207,16 @@ describe('ShowtimeService', () => {
       };
 
       // Mock movie existence check to throw error
-      mockMovieService.findById.mockRejectedValue(new NotFoundException('Movie not found'));
+      mockMovieService.findById.mockRejectedValue(
+        new NotFoundException('Movie not found'),
+      );
 
-      await expect(service.create(createShowtimeDto)).rejects.toThrow(NotFoundException);
-      expect(mockMovieService.findById).toHaveBeenCalledWith(createShowtimeDto.movieId);
+      await expect(service.create(createShowtimeDto)).rejects.toThrow(
+        NotFoundException,
+      );
+      expect(mockMovieService.findById).toHaveBeenCalledWith(
+        createShowtimeDto.movieId,
+      );
       expect(mockShowtimeRepository.createQueryBuilder).not.toHaveBeenCalled();
       expect(mockShowtimeRepository.create).not.toHaveBeenCalled();
       expect(mockShowtimeRepository.save).not.toHaveBeenCalled();
@@ -213,7 +248,10 @@ describe('ShowtimeService', () => {
       mockShowtimeRepository.findOne.mockResolvedValue(existingShowtime);
 
       // Mock movie existence check
-      mockMovieService.findById.mockResolvedValue({ id: 2, title: 'Another Movie' });
+      mockMovieService.findById.mockResolvedValue({
+        id: 2,
+        title: 'Another Movie',
+      });
 
       // Mock overlap check
       mockQueryBuilder.getMany.mockResolvedValue([]);
@@ -224,14 +262,27 @@ describe('ShowtimeService', () => {
       const result = await service.findById(1);
 
       expect(result).toEqual(updatedShowtime);
-      expect(mockShowtimeRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith('showtime');
-      expect(mockQueryBuilder.where).toHaveBeenCalledWith('showtime.theater = :theater', { theater: 'Theater 2' });
+      expect(mockShowtimeRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
+      expect(mockShowtimeRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'showtime',
+      );
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'showtime.theater = :theater',
+        { theater: 'Theater 2' },
+      );
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         '(showtime.startTime < :endTime AND showtime.endTime > :startTime)',
-        { startTime: updateShowtimeDto.startTime, endTime: updateShowtimeDto.endTime },
+        {
+          startTime: updateShowtimeDto.startTime,
+          endTime: updateShowtimeDto.endTime,
+        },
       );
-      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith('showtime.id != :excludeId', { excludeId: 1 });
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'showtime.id != :excludeId',
+        { excludeId: 1 },
+      );
       expect(mockShowtimeRepository.save).toHaveBeenCalledWith(updatedShowtime);
     });
   });
@@ -252,9 +303,12 @@ describe('ShowtimeService', () => {
 
       await service.delete(1);
 
-      expect(mockShowtimeRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
-      expect(mockShowtimeRepository.remove).toHaveBeenCalledWith(existingShowtime);
+      expect(mockShowtimeRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
+      expect(mockShowtimeRepository.remove).toHaveBeenCalledWith(
+        existingShowtime,
+      );
     });
   });
 });
-

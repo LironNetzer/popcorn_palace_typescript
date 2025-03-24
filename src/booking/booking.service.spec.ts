@@ -8,8 +8,6 @@ import { BadRequestException } from '@nestjs/common';
 
 describe('BookingService', () => {
   let service: BookingService;
-  let repo: Repository<Booking>;
-  let showtimeService: ShowtimeService;
 
   const mockBookingRepository = {
     findOne: jest.fn(),
@@ -82,14 +80,18 @@ describe('BookingService', () => {
       const result = await service.create(createBookingDto);
 
       expect(result).toEqual(newBooking);
-      expect(mockShowtimeService.findById).toHaveBeenCalledWith(createBookingDto.showtimeId);
+      expect(mockShowtimeService.findById).toHaveBeenCalledWith(
+        createBookingDto.showtimeId,
+      );
       expect(mockBookingRepository.findOne).toHaveBeenCalledWith({
         where: {
           showtimeId: createBookingDto.showtimeId,
           seatNumber: createBookingDto.seatNumber,
         },
       });
-      expect(mockBookingRepository.create).toHaveBeenCalledWith(createBookingDto);
+      expect(mockBookingRepository.create).toHaveBeenCalledWith(
+        createBookingDto,
+      );
       expect(mockBookingRepository.save).toHaveBeenCalledWith(newBooking);
     });
 
@@ -122,8 +124,12 @@ describe('BookingService', () => {
       // Mock seat availability check - seat already booked
       mockBookingRepository.findOne.mockResolvedValue(existingBooking);
 
-      await expect(service.create(createBookingDto)).rejects.toThrow(BadRequestException);
-      expect(mockShowtimeService.findById).toHaveBeenCalledWith(createBookingDto.showtimeId);
+      await expect(service.create(createBookingDto)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(mockShowtimeService.findById).toHaveBeenCalledWith(
+        createBookingDto.showtimeId,
+      );
       expect(mockBookingRepository.findOne).toHaveBeenCalledWith({
         where: {
           showtimeId: createBookingDto.showtimeId,

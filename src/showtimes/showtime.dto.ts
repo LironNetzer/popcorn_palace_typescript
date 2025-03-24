@@ -1,4 +1,11 @@
-import { IsDate, IsInt, IsNumber, IsString, Length, Min } from 'class-validator';
+import {
+  IsDate,
+  IsInt,
+  IsNumber,
+  IsString,
+  Length,
+  Min,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 /**
@@ -51,7 +58,4 @@ export class CreateShowtimeDto {
  * Represents the data transfer object for updating a showtime.
  * This class extends from the CreateShowtimeDto.
  */
-export class UpdateShowtimeDto extends CreateShowtimeDto {
-}
-
-
+export class UpdateShowtimeDto extends CreateShowtimeDto {}

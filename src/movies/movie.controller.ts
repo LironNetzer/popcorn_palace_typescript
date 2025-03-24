@@ -1,16 +1,24 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { Movie } from '../entities/movie.entity';
 import { CreateMovieDto, UpdateMovieDto } from './movie.dto';
-
 
 /**
  * Controller for managing movie-related operations.
  */
 @Controller('movies')
 export class MovieController {
-  constructor(private readonly movieService: MovieService) {
-  }
+  constructor(private readonly movieService: MovieService) {}
 
   /**
    * Fetches and returns a promise containing an array of all movies.
@@ -68,5 +76,3 @@ export class MovieController {
     await this.movieService.remove(movieTitle);
   }
 }
-
-

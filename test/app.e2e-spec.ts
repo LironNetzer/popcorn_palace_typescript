@@ -11,7 +11,6 @@ describe('Popcorn Palace E2E Tests', () => {
   let app: INestApplication;
   let createdMovieId: number;
   let createdShowtimeId: number;
-  let createdBookingId: string;
 
   // Test data
   const testMovie: CreateMovieDto = {
@@ -25,7 +24,7 @@ describe('Popcorn Palace E2E Tests', () => {
   const testShowtime: CreateShowtimeDto = {
     movieId: 0, // will be set after movie creation
     theater: 'Test Theater 1',
-    price: 12.50,
+    price: 12.5,
     startTime: new Date('2024-03-25T18:00:00Z'),
     endTime: new Date('2024-03-25T20:00:00Z'),
   };

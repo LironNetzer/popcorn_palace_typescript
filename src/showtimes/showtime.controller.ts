@@ -14,7 +14,6 @@ import { Showtime } from '../entities/showtime.entity';
 import { ShowtimeService } from './showtime.service';
 import { CreateShowtimeDto, UpdateShowtimeDto } from './showtime.dto';
 
-
 /**
  * Controller for managing showtimes.
  * Handles HTTP requests related to showtime operations such as
@@ -27,8 +26,7 @@ export class ShowtimeController {
    *
    * @param {ShowtimeService} showtimeService - The service instance used to manage or retrieve showtime-related data.
    */
-  constructor(private readonly showtimeService: ShowtimeService) {
-  }
+  constructor(private readonly showtimeService: ShowtimeService) {}
 
   /**
    * Retrieves a showtime by its unique identifier.
@@ -37,7 +35,9 @@ export class ShowtimeController {
    * @return {Promise<Showtime>} A promise that resolves to the showtime object.
    */
   @Get(':showtimeId')
-  async findById(@Param('showtimeId', ParseIntPipe) showtimeId: number): Promise<Showtime> {
+  async findById(
+    @Param('showtimeId', ParseIntPipe) showtimeId: number,
+  ): Promise<Showtime> {
     return this.showtimeService.findById(showtimeId);
   }
 
@@ -50,7 +50,9 @@ export class ShowtimeController {
   @Post()
   @HttpCode(200)
   @UsePipes(new ValidationPipe())
-  async createShowtime(@Body() createShowtimeDto: CreateShowtimeDto): Promise<Showtime> {
+  async createShowtime(
+    @Body() createShowtimeDto: CreateShowtimeDto,
+  ): Promise<Showtime> {
     return this.showtimeService.create(createShowtimeDto);
   }
 
@@ -78,7 +80,9 @@ export class ShowtimeController {
    * @return {Promise<void>} A promise that resolves when the showtime is successfully deleted.
    */
   @Delete(':showtimeId')
-  async deleteShowtime(@Param('showtimeId', ParseIntPipe) showtimeId: number): Promise<void> {
+  async deleteShowtime(
+    @Param('showtimeId', ParseIntPipe) showtimeId: number,
+  ): Promise<void> {
     await this.showtimeService.delete(showtimeId);
   }
 }

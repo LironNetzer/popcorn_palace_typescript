@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Movie } from '../entities/movie.entity';
 import { CreateMovieDto, UpdateMovieDto } from './movie.dto';
-
 
 /**
  * Service responsible for managing Movie-related operations.
@@ -20,8 +23,7 @@ export class MovieService {
   constructor(
     @InjectRepository(Movie)
     private movieRepository: Repository<Movie>,
-  ) {
-  }
+  ) {}
 
   /**
    * Retrieves all movies stored in the repository.
@@ -56,9 +58,13 @@ export class MovieService {
     // check if there is already a movie with this name (in general a title
     // isn't unique for a movie, but because the update function is by a movie
     // title, it won't be consistent to allow two entities with the same name
-    const existingMovie: Movie = await this.movieRepository.findOne({ where: { title: createMovieDto.title } });
+    const existingMovie: Movie = await this.movieRepository.findOne({
+      where: { title: createMovieDto.title },
+    });
     if (existingMovie) {
-      throw new BadRequestException(`Movie with the title ${createMovieDto.title} already exists.`);
+      throw new BadRequestException(
+        `Movie with the title ${createMovieDto.title} already exists.`,
+      );
     }
 
     const newMovie = this.movieRepository.create(createMovieDto);
@@ -73,7 +79,9 @@ export class MovieService {
    * @throws {NotFoundException} If no movie with the given title is found.
    */
   async findByTitle(title: string): Promise<Movie> {
-    const movie = await this.movieRepository.findOne({ where: { title: title } });
+    const movie = await this.movieRepository.findOne({
+      where: { title: title },
+    });
     if (!movie) {
       throw new NotFoundException(`Movie with the title ${title} doesnt exist`);
     }
@@ -92,8 +100,13 @@ export class MovieService {
    * @throws {NotFoundException} If the movie with the specified title is
    * not found.
    */
-  async update(movieTitle: string, updateMovieDto: UpdateMovieDto): Promise<void> {
-    const movieToUpdate = await this.movieRepository.findOne({ where: { title: movieTitle } });
+  async update(
+    movieTitle: string,
+    updateMovieDto: UpdateMovieDto,
+  ): Promise<void> {
+    const movieToUpdate = await this.movieRepository.findOne({
+      where: { title: movieTitle },
+    });
     if (!movieToUpdate) {
       throw new NotFoundException('Movie not found');
     }

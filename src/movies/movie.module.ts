@@ -16,5 +16,4 @@ import { Movie } from '../entities/movie.entity';
   controllers: [MovieController],
   exports: [MovieService],
 })
-export class MovieModule {
-}
+export class MovieModule {}

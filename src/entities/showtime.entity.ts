@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Movie } from './movie.entity';
 import { Booking } from './booking.entity';
 
@@ -57,8 +64,6 @@ export class Showtime {
   /**
    * List of bookings for this showtime.
    */
-  @OneToMany(() => Booking, booking => booking.showtime)
+  @OneToMany(() => Booking, (booking) => booking.showtime)
   bookings: Booking[];
 }
-
-
