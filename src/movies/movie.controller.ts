@@ -18,7 +18,8 @@ export class MovieController {
    * @return {Promise<Movie[]>} A promise that resolves to an array of
    * Movie objects.
    */
-  @Get('all') findAll(): Promise<Movie[]> {
+  @Get('all')
+  async findAll(): Promise<Movie[]> {
     return this.movieService.findAll();
   }
 
@@ -48,7 +49,7 @@ export class MovieController {
   @Post('update/:movieTitle')
   @HttpCode(200)
   @UsePipes(new ValidationPipe())
-  updateMovie(
+  async updateMovie(
     @Param('movieTitle') movieTitle: string,
     @Body() updateMovieDto: UpdateMovieDto,
   ): Promise<void> {

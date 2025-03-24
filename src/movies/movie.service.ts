@@ -29,7 +29,7 @@ export class MovieService {
    * @return {Promise<Movie[]>} A promise that resolves to an array of
    * Movie objects.
    */
-  findAll(): Promise<Movie[]> {
+  async findAll(): Promise<Movie[]> {
     return this.movieRepository.find();
   }
 
@@ -41,7 +41,7 @@ export class MovieService {
    * @return {Promise<Movie>} A promise that resolves to the movie object if
    * found, or null if not found.
    */
-  findById(movieId: number): Promise<Movie> {
+  async findById(movieId: number): Promise<Movie> {
     return this.movieRepository.findOne({ where: { id: movieId } });
   }
 

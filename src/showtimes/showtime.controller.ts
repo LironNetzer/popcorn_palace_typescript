@@ -37,7 +37,7 @@ export class ShowtimeController {
    * @return {Promise<Showtime>} A promise that resolves to the showtime object.
    */
   @Get(':showtimeId')
-  findById(@Param('showtimeId', ParseIntPipe) showtimeId: number): Promise<Showtime> {
+  async findById(@Param('showtimeId', ParseIntPipe) showtimeId: number): Promise<Showtime> {
     return this.showtimeService.findById(showtimeId);
   }
 
