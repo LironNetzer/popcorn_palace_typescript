@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Booking } from '../entities/booking.entity';
 import { CreateBookingDto } from './booking.dto';
+import { ShowtimeService } from '../showtimes/showtime.service';
 
 
 @Injectable()
@@ -10,66 +11,28 @@ export class BookingService {
   constructor(
     @InjectRepository(Booking)
     private bookingRepository: Repository<Booking>,
+    private readonly showtimeService: ShowtimeService,
   ) {
   }
 
   async create(createBookingDto: CreateBookingDto): Promise<Booking> {
     // verify showtime exists
+    await this.showtimeService.findById(createBookingDto.showtimeId);
 
     // check if the relevant seat is free (based on showtimeId and seat number)
+    const existingBooking = await this.bookingRepository.findOne({
+      where: {
+        showtimeId: createBookingDto.showtimeId,
+        seatNumber: createBookingDto.seatNumber,
+      },
+    });
+    if (existingBooking) {
+      throw new HttpException(`The ${createBookingDto.seatNumber} seat is already taken`, HttpStatus.BAD_REQUEST);
+    }
 
-
+    // create the new booking
     const booking = this.bookingRepository.create(createBookingDto);
     return this.bookingRepository.save(booking);
   }
-
-  // findAll(): Promise<Movie[]> {
-  //   return this.movieRepository.find(); // fetch all movies
-  // }
-  //
-  // findById(movieId: number): Promise<Movie> {
-  //   return this.movieRepository.findOne({ where: { id: movieId } });
-  // }
-  //
-  // async create(createMovieDto: CreateMovieDto): Promise<Movie> {
-  //   // check if there is already a movie with this name (in general a title
-  //   // isn't unique for a movie, but because the update function is by a movie
-  //   // title, it won't be consistent to allow two entities with the same name
-  //   const existingMovie: Movie = await this.movieRepository.findOne({ where: { title: createMovieDto.title } });
-  //   if (existingMovie) {
-  //     throw new HttpException(`Movie with the title ${createMovieDto.title} already exists.`, HttpStatus.BAD_REQUEST);
-  //   }
-  //
-  //   const newMovie = this.movieRepository.create(createMovieDto);
-  //   return this.movieRepository.save(newMovie);
-  // }
-  //
-  // async findByTitle(title: string): Promise<Movie> {
-  //   const movie = await this.movieRepository.findOne({ where: { title: title } });
-  //   if (!movie) {
-  //     throw new Error(`Movie with the title ${title} doesnt exist`); //todo - change
-  //   }
-  //   return movie;
-  // }
-  //
-  // async update(movieTitle: string, updateMovieDto: UpdateMovieDto): Promise<void> {
-  //   const movieToUpdate = await this.movieRepository.findOne({ where: { title: movieTitle } });
-  //   if (!movieToUpdate) {
-  //     throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
-  //   }
-  //
-  //   movieToUpdate.title = updateMovieDto.title;
-  //   movieToUpdate.genre = updateMovieDto.genre;
-  //   movieToUpdate.duration = updateMovieDto.duration;
-  //   movieToUpdate.releaseYear = updateMovieDto.releaseYear;
-  //
-  //   await this.movieRepository.save(movieToUpdate);
-  // }
-  //
-  // async delete(title: string): Promise<void> {
-  //   const movie = await this.findByTitle(title);
-  //   await this.movieRepository.remove(movie);
-  //   // todo - change to delete? (faster, but can't add the condition to make sure it exists
-  // }
 
 }

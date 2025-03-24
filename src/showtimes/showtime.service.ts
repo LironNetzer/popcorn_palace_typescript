@@ -11,7 +11,7 @@ export class ShowtimeService {
   constructor(
     @InjectRepository(Showtime)
     private showtimeRepository: Repository<Showtime>,
-    private movieService: MovieService, // todo - why?
+    private readonly movieService: MovieService, // todo - why?
   ) {
   }
 
@@ -28,7 +28,7 @@ export class ShowtimeService {
     const movie = await this.movieService.findById(createShowtimeDto.movieId);
     if (!movie) {
       throw new HttpException(`Movie with id ${createShowtimeDto.movieId} not found`, HttpStatus.NOT_FOUND); //todo ? not found or somethinhg else?
-    } //todo - earse after I finished the relations
+    } //todo - earse after I finished the relations?
 
     // Check for overlapping showtimes in the same theater
     const hasOverlap = await this.isTheatreFree(
